@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    /* Basic */
+    "target": "ES6",
+    "module": "commonjs",
+
+    /* Paths */
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    /* Node compatibility */
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+
+    /* Strictness */
+    "strict": true,
+
+    /* Utilities */
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
