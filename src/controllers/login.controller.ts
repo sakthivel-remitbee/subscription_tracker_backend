@@ -1,21 +1,14 @@
+import LoginLogs from "../models/loginLogs.model";
 import { Request, Response } from "express";
-import { validationResult } from "express-validator";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import User  from "../models/user.model"; 
-import logger from "../config/logger"; 
+import User from "../models/user.model";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+const MAX_SESSIONS = 2;
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
-   
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      logger.warn("Validation failed during login");
-      res.status(400).json({ errors: errors.array() });
-      return;
-    }
-
-    const { email, password } = req.body;
+    const { email, password }: { email: string; password: string } = req.body;
 
     const user = await User.findOne({ where: { email } });
 
@@ -31,6 +24,21 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    const activeSessions = await LoginLogs.count({
+      where: {
+        uid: user.id,
+        isValid: true,
+      },
+    });
+
+  
+    if (activeSessions >= MAX_SESSIONS) {
+      res.status(403).json({
+        message: "Session limit reached. Please logout from another device.",
+      });
+      return;
+    }
+
     const accessToken = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_A_SECRET as string,
@@ -38,25 +46,25 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     );
 
     const refreshToken = jwt.sign(
-      { email: user.email },
+      { id: user.id },
       process.env.JWT_R_SECRET as string,
-      { expiresIn: "7d"}
+      { expiresIn: "7d" }
     );
 
-    logger.info(`User logged in successfully: ${email}`);
+    await LoginLogs.create({
+      uid: user.id,
+      refreshToken,
+      isValid: true,
+      countUsers: activeSessions + 1,
+    });
 
     res.status(200).json({
       message: "Login successful",
       accessToken,
       refreshToken,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      },
     });
-  } catch (error:any) {
-    logger.error("error", error);
+
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };

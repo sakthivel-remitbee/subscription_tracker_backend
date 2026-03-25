@@ -193,3 +193,120 @@
 2026-03-24T12:22:09.771Z [INFO]: Server running on port 3000 
 2026-03-24T12:22:09.818Z [INFO]: Db conncected
 2026-03-24T12:26:11.268Z [INFO]: User logged in successfully: test@gmail.com
+2026-03-25T04:30:47.307Z [INFO]: Server running on port 3000 
+2026-03-25T04:30:47.390Z [INFO]: Db conncected
+2026-03-25T04:30:55.590Z [INFO]: User logged in successfully: test@gmail.com
+2026-03-25T06:44:17.164Z [INFO]: Server running on port 3000 
+2026-03-25T06:44:17.215Z [INFO]: Db conncected
+2026-03-25T06:53:02.356Z [INFO]: Server running on port 3000 
+2026-03-25T06:53:02.409Z [INFO]: Db conncected
+2026-03-25T06:53:06.953Z [INFO]: User logged in successfully: test@gmail.com
+2026-03-25T06:54:57.833Z [INFO]: User logged in successfully: test@gmail.com
+2026-03-25T07:54:59.118Z [INFO]: User logged in successfully: test@gmail.com
+2026-03-25T08:06:19.596Z [INFO]: User logged in successfully: test@gmail.com
+2026-03-25T08:14:34.365Z [INFO]: User logged in successfully: test@gmail.com
+2026-03-25T08:41:57.328Z [INFO]: Server running on port 3000 
+2026-03-25T08:41:57.369Z [INFO]: Db conncected
+2026-03-25T08:55:26.473Z [INFO]: Server running on port 3000 
+2026-03-25T08:55:26.515Z [INFO]: Db conncected
+2026-03-25T09:00:53.462Z [INFO]: Server running on port 5000 
+2026-03-25T09:00:53.506Z [INFO]: Db conncected
+2026-03-25T09:04:39.798Z [INFO]: Server running on port 5000 
+2026-03-25T09:04:39.840Z [INFO]: Db conncected
+2026-03-25T09:30:44.330Z [INFO]: User logged in successfully: test@gmail.com
+2026-03-25T10:52:50.729Z [INFO]: User logged in successfully: test@gmail.com
+2026-03-25T10:53:47.204Z [INFO]: User logged in successfully: test@gmail.com
+2026-03-25T10:55:00.275Z [INFO]: User logged in successfully: test@gmail.com
+2026-03-25T12:10:35.353Z [INFO]: Server running on port 5000 
+2026-03-25T12:10:35.454Z [INFO]: Db conncected
+2026-03-25T12:10:39.312Z [INFO]: Server running on port 5000 
+2026-03-25T12:10:39.364Z [INFO]: Db conncected
+2026-03-25T12:10:41.702Z [INFO]: Server running on port 5000 
+2026-03-25T12:10:41.742Z [INFO]: Db conncected
+2026-03-25T12:10:50.359Z [INFO]: Server running on port 5000 
+2026-03-25T12:10:50.398Z [INFO]: Db conncected
+2026-03-25T12:10:59.171Z [INFO]: Server running on port 5000 
+2026-03-25T12:10:59.209Z [INFO]: Db conncected
+2026-03-25T12:11:07.887Z [INFO]: Server running on port 5000 
+2026-03-25T12:11:07.927Z [INFO]: Db conncected
+2026-03-25T12:44:09.390Z [INFO]: Server running on port 5000 
+2026-03-25T12:44:09.428Z [INFO]: Db conncected
+2026-03-25T12:48:01.382Z [INFO]: Server running on port 5000 
+2026-03-25T12:48:01.421Z [INFO]: Db conncected
+2026-03-25T12:53:58.782Z [INFO]: Server running on port 5000 
+2026-03-25T12:53:58.826Z [INFO]: Db conncected
+2026-03-25T12:54:28.521Z [INFO]: Server running on port 5000 
+2026-03-25T12:54:28.565Z [INFO]: Db conncected
+2026-03-25T12:54:35.015Z [INFO]: Server running on port 5000 
+2026-03-25T12:54:35.051Z [INFO]: Db conncected
+2026-03-25T12:54:55.520Z [INFO]: Server running on port 5000 
+2026-03-25T12:54:55.563Z [INFO]: Db conncected
+2026-03-25T12:55:18.306Z [INFO]: Server running on port 5000 
+2026-03-25T12:55:18.342Z [INFO]: Db conncected
+2026-03-25T12:55:24.773Z [INFO]: Server running on port 5000 
+2026-03-25T12:55:24.814Z [INFO]: Db conncected
+2026-03-25T12:55:43.299Z [INFO]: Server running on port 5000 
+2026-03-25T12:55:43.336Z [INFO]: Db conncected
+2026-03-25T12:55:51.633Z [INFO]: Server running on port 5000 
+2026-03-25T12:55:51.680Z [INFO]: Db conncected
+2026-03-25T13:02:07.200Z [INFO]: Server running on port 5000 
+2026-03-25T13:02:07.315Z [INFO]: Db conncected
+2026-03-25T13:02:18.110Z [INFO]: Server running on port 5000 
+2026-03-25T13:02:18.148Z [INFO]: Db conncected
+2026-03-25T13:09:16.346Z [INFO]: Server running on port 5000 
+2026-03-25T13:09:16.388Z [INFO]: Db conncected
+2026-03-25T13:09:47.087Z [INFO]: Server running on port 5000 
+2026-03-25T13:09:47.120Z [INFO]: Db conncected
+2026-03-25T13:09:49.846Z [INFO]: Server running on port 5000 
+2026-03-25T13:09:49.879Z [INFO]: Db conncected
+2026-03-25T13:09:55.079Z [INFO]: Server running on port 5000 
+2026-03-25T13:09:55.116Z [INFO]: Db conncected
+2026-03-25T13:09:58.391Z [INFO]: Server running on port 5000 
+2026-03-25T13:09:58.427Z [INFO]: Db conncected
+2026-03-25T13:10:01.070Z [INFO]: Server running on port 5000 
+2026-03-25T13:10:01.103Z [INFO]: Db conncected
+2026-03-25T13:10:04.263Z [INFO]: Server running on port 5000 
+2026-03-25T13:10:04.296Z [INFO]: Db conncected
+2026-03-25T13:10:07.248Z [INFO]: Server running on port 5000 
+2026-03-25T13:10:07.280Z [INFO]: Db conncected
+2026-03-25T13:11:05.252Z [INFO]: Server running on port 5000 
+2026-03-25T13:11:05.286Z [INFO]: Db conncected
+2026-03-25T13:11:07.525Z [INFO]: Server running on port 5000 
+2026-03-25T13:11:07.556Z [INFO]: Db conncected
+2026-03-25T13:11:11.774Z [INFO]: Server running on port 5000 
+2026-03-25T13:11:11.808Z [INFO]: Db conncected
+2026-03-25T13:12:19.104Z [INFO]: Server running on port 5000 
+2026-03-25T13:12:19.137Z [INFO]: Db conncected
+2026-03-25T13:12:23.032Z [INFO]: Server running on port 5000 
+2026-03-25T13:12:23.063Z [INFO]: Db conncected
+2026-03-25T13:31:45.598Z [ERROR]: Invalid or expired token secret or public key must be provided
+2026-03-25T13:32:31.488Z [ERROR]: Invalid or expired token secret or public key must be provided
+2026-03-25T13:33:29.844Z [ERROR]: Invalid or expired token jwt malformed
+2026-03-25T13:33:46.747Z [ERROR]: Invalid or expired token invalid token
+2026-03-25T13:34:32.498Z [ERROR]: Invalid or expired token invalid token
+2026-03-25T13:34:50.864Z [ERROR]: Invalid or expired token invalid token
+2026-03-25T13:35:19.685Z [ERROR]: Invalid or expired token invalid token
+2026-03-25T13:36:05.240Z [WARN]: No token provided
+2026-03-25T13:39:23.537Z [ERROR]: Invalid or expired token secret or public key must be provided
+2026-03-25T13:40:49.292Z [INFO]: Server running on port 5000 
+2026-03-25T13:40:49.329Z [INFO]: Db conncected
+2026-03-25T13:40:57.293Z [INFO]: Token verifed successfully
+2026-03-25T13:41:42.269Z [INFO]: Token verifed successfully
+2026-03-25T13:44:09.392Z [INFO]: Server running on port 5000 
+2026-03-25T13:44:09.424Z [INFO]: Db conncected
+2026-03-25T13:44:14.059Z [INFO]: Server running on port 5000 
+2026-03-25T13:44:14.092Z [INFO]: Db conncected
+2026-03-25T13:44:17.352Z [INFO]: Server running on port 5000 
+2026-03-25T13:44:17.389Z [INFO]: Db conncected
+2026-03-25T13:44:22.250Z [INFO]: Server running on port 5000 
+2026-03-25T13:44:22.284Z [INFO]: Db conncected
+2026-03-25T13:44:28.283Z [INFO]: Server running on port 5000 
+2026-03-25T13:44:28.318Z [INFO]: Db conncected
+2026-03-25T13:45:30.745Z [INFO]: Server running on port 5000 
+2026-03-25T13:45:30.779Z [INFO]: Db conncected
+2026-03-25T13:45:36.805Z [INFO]: Server running on port 5000 
+2026-03-25T13:45:36.838Z [INFO]: Db conncected
+2026-03-25T13:45:42.246Z [INFO]: Server running on port 5000 
+2026-03-25T13:45:42.281Z [INFO]: Db conncected
+2026-03-25T13:45:46.477Z [INFO]: Server running on port 5000 
+2026-03-25T13:45:46.519Z [INFO]: Db conncected
