@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import cloudinary from "../config/cloudinary";
 import User from "../models/user.model";
+import { AuthRequest } from "../types/authRequest";
 
-export const uploadImage = async (req: Request, res: Response) => {
+export const uploadImage = async (req: AuthRequest, res: Response) => {
   try {
     const file = req.file;
-    const userId = req.params.id;
+    const userId = req.user?.id;
     const timezone = req.body.timezone;
 
     if (!file) {
