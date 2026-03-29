@@ -8,6 +8,7 @@ export const logout = async (req: Request, res: Response) => {
     if (!refreshToken) {
       return res.status(400).json({ message: "Refresh token is required" });
     }
+    
     const session = await LoginLogs.findOne({ where: { refreshToken } });
 
     if (!session) {

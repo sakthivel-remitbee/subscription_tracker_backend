@@ -7,12 +7,12 @@ export const authMiddleware = ( req: AuthRequest,res: Response,next: NextFunctio
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!authHeader || !authHeader.startsWith("Bearer")) {
       logger.warn("No token provided");
       res.status(401).json({ message: "No token provided" });
       return;
     }
-
+    
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_A_SECRET as string);
 
