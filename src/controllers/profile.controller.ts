@@ -18,7 +18,7 @@ export const profile = async (req: AuthRequest, res: Response) => {
 
     res.json({
       message: "Profile data fetched",
-      user: {name:user.name,email:user.email,timezone:user.timezone,createdAt:user.createdAt},
+      user: {name:user.name,email:user.email,timezone:user.timezone,createdAt:user.createdAt,img:user.img},
     });
 
   } catch (error: any) {

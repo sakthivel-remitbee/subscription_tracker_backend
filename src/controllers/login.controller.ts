@@ -9,7 +9,6 @@ const MAX_SESSIONS = 2;
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password }: { email: string; password: string } = req.body;
-
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
@@ -62,7 +61,15 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       message: "Login successful",
       accessToken,
       refreshToken,
-      user:{uid:user.id,name:user.name,email:user.email}
+      user:{
+        uid:user.id,
+        name:user.name,
+        email:user.email,
+        timezone:user.timezone,
+        img:user.img,
+        createdAt:user.createdAt,
+        
+      }
     });
 
   } catch (error: any) {
