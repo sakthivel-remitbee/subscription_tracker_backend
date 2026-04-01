@@ -64,10 +64,25 @@ export const createSubscription = async (req: AuthRequest, res: Response) => {
 
     res.status(201).json({
       message: "Subscription created successfully",
-      subscription,
+      subscription:{
+        serviceName,
+        userId,
+        billingCycle,
+        cost,
+        status,
+        paymentMethod,
+        brandColorHex,
+        currency,
+        category,
+        startDate:subscription.startDate,
+        nextRenewal,
+        remindMeIn,
+        notes: subscription.notes,
+      }
     });
 
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
+

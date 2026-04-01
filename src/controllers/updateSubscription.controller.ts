@@ -68,7 +68,20 @@ export const updateSubscription = async (req: AuthRequest, res: Response) => {
 
     res.json({
       message: "Subscription updated successfully",
-      subscription,
+        subscription:{
+        userId,
+        billingCycle,
+        cost,
+        status,
+        paymentMethod,
+        brandColorHex,
+        currency,
+        category,
+        startDate:subscription.startDate,
+        nextRenewal,
+        remindMeIn,
+        notes: subscription.notes,
+      }
     });
 
   } catch (error: any) {
