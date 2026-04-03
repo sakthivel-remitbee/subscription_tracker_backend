@@ -117,7 +117,7 @@ export const getSubscriptions = async (req: AuthRequest, res: Response) => {
         return sum + monthlyCost * rate;
       }, 0);
 
-    const targetCurrencyCode = req.user?.currency ?? userWithCurrency?.currency?.code ?? "USD";
+    const targetCurrencyCode = userWithCurrency?.currency?.code ?? req.user?.currency ?? "USD";
     const targetCurrencySymbol =
       targetCurrencyCode === userWithCurrency?.currency?.code
         ? (userWithCurrency?.currency?.symbol ?? "$")

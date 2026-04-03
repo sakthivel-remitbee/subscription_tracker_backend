@@ -86,7 +86,7 @@ export const getCalendarData = async (req: AuthRequest, res: Response) => {
       }),
     ]);
 
-    const userCurrencyCode = req.user?.currency ?? userWithCurrency?.currency?.code ?? "USD";
+    const userCurrencyCode = userWithCurrency?.currency?.code ?? req.user?.currency ?? "USD";
     const userCurrencySymbol =
       userWithCurrency?.currency?.code === userCurrencyCode
         ? (userWithCurrency?.currency?.symbol ?? "$")
