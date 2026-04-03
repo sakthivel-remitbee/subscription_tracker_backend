@@ -4,7 +4,6 @@ import sequelize from "../config/db";
 class BillingCycle extends Model {
   declare id: number;
   declare label: string;
-  declare months: number;
 }
 
 BillingCycle.init(

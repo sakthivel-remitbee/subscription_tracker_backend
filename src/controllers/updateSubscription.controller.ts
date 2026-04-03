@@ -39,6 +39,29 @@ export const updateSubscription = async (req: AuthRequest, res: Response) => {
       notes,
     } = req.body;
 
+    if (
+      !serviceName ||
+      !category ||
+      cost === undefined ||
+      cost === null ||
+      !status ||
+      !nextRenewal ||
+      remindMeIn === undefined ||
+      remindMeIn === null ||
+      !billingCycle ||
+      !paymentMethod ||
+      !brandColorHex ||
+      !currency
+    ) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    if (Number(cost) <= 0) {
+      return res.status(400).json({ message: "cost must be greater than 0" });
+    }
+    if (!["active", "canceled"].includes(status)) {
+      return res.status(400).json({ message: "Status must be active or canceled" });
+    }
+
     // find FK ids by name/value
     const categoryRecord      = await Category.findOne({ where: { name: category } });
     const currencyRecord      = await Currency.findOne({ where: { code: currency } });
@@ -69,6 +92,8 @@ export const updateSubscription = async (req: AuthRequest, res: Response) => {
     res.json({
       message: "Subscription updated successfully",
         subscription:{
+        id:subscription.id,
+        serviceName,
         userId,
         billingCycle,
         cost,
