@@ -1,6 +1,7 @@
 import { Response } from "express";
 import User from "../models/user.model";
 import { AuthRequest } from "../types/authRequest";
+import Currency from "../models/currency.model";
 
 export const profile = async (req: AuthRequest, res: Response) => {
   try {
@@ -10,7 +11,10 @@ export const profile = async (req: AuthRequest, res: Response) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const user = await User.findOne({ where: { id: userId } });
+    const user: any = await User.findOne({
+      where: { id: userId },
+      include: [{ model: Currency, as: "currency", attributes: ["code"] }],
+    });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -18,7 +22,14 @@ export const profile = async (req: AuthRequest, res: Response) => {
 
     res.json({
       message: "Profile data fetched",
-      user: {name:user.name,email:user.email,timezone:user.timezone,createdAt:user.createdAt,img:user.img},
+      user: {
+        name: user.name,
+        email: user.email,
+        timezone: user.timezone,
+        createdAt: user.createdAt,
+        img: user.img,
+        currency: user?.currency?.code ?? null,
+      },
     });
 
   } catch (error: any) {

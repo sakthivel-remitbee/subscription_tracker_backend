@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/db";
+import Currency from "./currency.model";
 
 class User extends Model {
   declare id: number;
@@ -8,6 +9,7 @@ class User extends Model {
   declare password: string;
   declare img: string | null;
   declare timezone: string | null;
+  declare currencyId: number | null;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
@@ -41,6 +43,13 @@ User.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    currencyId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 2,
+      references: { model: "currencies", key: "id" },
+      onDelete: "SET NULL",
+    },
   },
   {
     sequelize,
@@ -48,5 +57,7 @@ User.init(
     timestamps: true,
   }
 );
+
+User.belongsTo(Currency, { foreignKey: "currencyId", as: "currency" });
 
 export default User;
