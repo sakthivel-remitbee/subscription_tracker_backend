@@ -6,6 +6,7 @@ import Currency from "../models/currency.model";
 import BillingCycle from "../models/billingCycle.model";
 import PaymentMethod from "../models/paymentMethod.model";
 import BrandColor from "../models/brandColor.model";
+import { Op } from "sequelize";
 
 const toUSD: Record<string, number> = {
   USD: 1,
@@ -13,6 +14,14 @@ const toUSD: Record<string, number> = {
   EUR: 1.08,
   GBP: 1.27,
   AED: 0.27,
+};
+
+const billingCycleToMonths: Record<string, number> = {
+  monthly: 1,
+  quarterly: 3,
+  "half-yearly": 6,
+  yearly: 12,
+  annual: 12,
 };
 
 export const getSubscriptions = async (req: AuthRequest, res: Response) => {
@@ -25,25 +34,72 @@ export const getSubscriptions = async (req: AuthRequest, res: Response) => {
 
     const countParam = req.params.count;
     const isAll = countParam === "all";
-    const limit = isAll ? undefined : parseInt(countParam as string) || 10;
+    const parsedPage = Number.parseInt(req.query.page as string, 10);
+    const parsedLimit = Number.parseInt(req.query.limit as string, 10);
+    const legacyLimit = Number.parseInt(countParam as string, 10);
 
-    const subscriptions = await Subscription.findAll({
-      where: { userId },
-      ...(limit !== undefined && { limit }),
+    const page = Number.isNaN(parsedPage) || parsedPage < 1 ? 1 : parsedPage;
+    const limit = Number.isNaN(parsedLimit) || parsedLimit < 1
+      ? (Number.isNaN(legacyLimit) || legacyLimit < 1 ? 10 : legacyLimit)
+      : parsedLimit;
+    const safeLimit = Math.min(limit, 100);
+    const offset = (page - 1) * safeLimit;
+    const statusParam = req.query.status as string | undefined;
+    const categoryParam = (req.query.category as string | undefined)?.trim();
+    const serviceNameParam = (req.query.serviceName as string | undefined)?.trim();
+
+    if (statusParam && !["active", "canceled"].includes(statusParam)) {
+      return res.status(400).json({ message: "status must be active or canceled" });
+    }
+
+    const whereClause: any = { userId };
+    if (statusParam) {
+      whereClause.status = statusParam as "active" | "canceled";
+    }
+    if (serviceNameParam) {
+      whereClause.serviceName = { [Op.like]: `%${serviceNameParam}%` };
+    }
+
+    const categoryInclude = categoryParam
+      ? {
+          model: Category,
+          as: "category",
+          attributes: ["name"],
+          where: { name: { [Op.like]: `%${categoryParam}%` } },
+          required: true,
+        }
+      : { model: Category, as: "category", attributes: ["name"] };
+
+    const include = [
+      categoryInclude,
+      { model: Currency, as: "currency", attributes: ["code", "symbol"] },
+      { model: BillingCycle, as: "billingCycle", attributes: ["label"] },
+      { model: PaymentMethod, as: "paymentMethod", attributes: ["name"] },
+      { model: BrandColor, as: "brandColor", attributes: ["hex"] },
+    ];
+
+    const paginated = await Subscription.findAndCountAll({
+      where: whereClause,
+      limit: safeLimit,
+      offset,
       order: [["nextRenewal", "ASC"]],
-      include: [
-        { model: Category,      as: "category",      attributes: ["name"] },
-        { model: Currency,      as: "currency",       attributes: ["code", "symbol"] },
-        { model: BillingCycle,  as: "billingCycle",   attributes: ["label"] },
-        { model: PaymentMethod, as: "paymentMethod",  attributes: ["name"] },
-        { model: BrandColor,    as: "brandColor",     attributes: ["hex"] },
-      ],
+      include,
+    });
+    const subscriptions = paginated.rows;
+    const totalItems = paginated.count;
+
+    const latestSubscription: any = await Subscription.findOne({
+      where: { userId },
+      include: [{ model: Currency, as: "currency", attributes: ["code", "symbol"] }],
+      order: [["updatedAt", "DESC"]],
     });
 
     const all = await Subscription.findAll({
-      where: { userId },
+      where: whereClause,
       include: [
+        categoryInclude,
         { model: Currency, as: "currency", attributes: ["code"] },
+        { model: BillingCycle, as: "billingCycle", attributes: ["label"] },
       ],
     });
 
@@ -55,10 +111,16 @@ export const getSubscriptions = async (req: AuthRequest, res: Response) => {
         const currencyCode = s.currency?.code ?? "USD";
         const rate = toUSD[currencyCode] ?? 1;
         const cost = parseFloat(s.cost);
-        const months = s.billingCycle?.months ?? 1;
+        const cycleLabel = (s.billingCycle?.label ?? "monthly").toLowerCase();
+        const months = billingCycleToMonths[cycleLabel] ?? 1;
         const monthlyCost = cost / months;
         return sum + monthlyCost * rate;
       }, 0);
+
+    const targetCurrencyCode = latestSubscription?.currency?.code ?? "USD";
+    const targetCurrencySymbol = latestSubscription?.currency?.symbol ?? "$";
+    const targetRate = toUSD[targetCurrencyCode] ?? 1;
+    const monthlyCostInLoginCurrency = monthlyCostUSD / targetRate;
 
     const data = subscriptions.map((s: any) => ({
       id:            s.id,
@@ -76,10 +138,23 @@ export const getSubscriptions = async (req: AuthRequest, res: Response) => {
 
     res.json({
       subscriptions: data,
+      pagination: {
+        page,
+        limit: safeLimit,
+        totalItems,
+        totalPages: Math.ceil(totalItems / safeLimit),
+        hasNextPage: page * safeLimit < totalItems,
+        hasPrevPage: page > 1,
+        source: isAll ? "all" : "count",
+        status: statusParam ?? "all",
+        category: categoryParam ?? "all",
+        serviceName: serviceNameParam ?? "all",
+      },
       summary: {
-        limit: isAll ? "all" : limit,
+        limit: safeLimit,
         totalActive,
-        monthlyCostUSD: `$${monthlyCostUSD.toFixed(2)}`,
+        monthlyCost: `${targetCurrencySymbol}${monthlyCostInLoginCurrency.toFixed(2)}`,
+        currency: targetCurrencyCode,
       },
     });
 
@@ -87,4 +162,3 @@ export const getSubscriptions = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: error.message });
   }
 };
-

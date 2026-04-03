@@ -29,8 +29,27 @@ export const createSubscription = async (req: AuthRequest, res: Response) => {
       notes,
     } = req.body;
 
-    if (!serviceName || !category || !cost || !status || !nextRenewal || !remindMeIn || !billingCycle || !paymentMethod || !brandColorHex || !currency) {
+    if (
+      !serviceName ||
+      !category ||
+      cost === undefined ||
+      cost === null ||
+      !status ||
+      !nextRenewal ||
+      remindMeIn === undefined ||
+      remindMeIn === null ||
+      !billingCycle ||
+      !paymentMethod ||
+      !brandColorHex ||
+      !currency
+    ) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+    if (Number(cost) <= 0) {
+      return res.status(400).json({ message: "cost must be greater than 0" });
+    }
+    if (!["active", "canceled"].includes(status)) {
+      return res.status(400).json({ message: "Status must be active or canceled" });
     }
 
     // find FK ids by name/value
@@ -64,7 +83,22 @@ export const createSubscription = async (req: AuthRequest, res: Response) => {
 
     res.status(201).json({
       message: "Subscription created successfully",
-      subscription,
+      subscription:{
+        id:subscription.id,
+        serviceName,
+        userId,
+        billingCycle,
+        cost,
+        status,
+        paymentMethod,
+        brandColorHex,
+        currency,
+        category,
+        startDate:subscription.startDate,
+        nextRenewal,
+        remindMeIn,
+        notes: subscription.notes,
+      }
     });
 
   } catch (error: any) {
