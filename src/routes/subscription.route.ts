@@ -1,14 +1,16 @@
 import { Router } from "express";
-import { getSubscriptions } from "../controllers/subcription.controller";
+import { getSubscriptions } from "../controllers/subscription.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { createSubscription } from "../controllers/createSubscription.controller";
 import { updateSubscription } from "../controllers/updateSubscription.controller";
 import { updateSubscriptionStatus } from "../controllers/updateSubscriptionStatus.controller";
 import { deleteSubscription } from "../controllers/deleteSubscription.controller";
+import { getCalendarData } from "../controllers/calendar.controller";
 
 const router = Router();
 
 router.post("/create", authMiddleware,createSubscription);
+router.get("/calendar", authMiddleware, getCalendarData);
 router.get("/:count", authMiddleware, getSubscriptions);
 router.put("/update/:id",authMiddleware, updateSubscription);
 router.put("/status/:id",authMiddleware, updateSubscriptionStatus);

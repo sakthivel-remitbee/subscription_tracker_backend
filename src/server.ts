@@ -6,15 +6,12 @@ import router from "./routes/auth.route";
 import userRouter from "./routes/user.route";
 import cors from 'cors';
 import subscriptionRoutes from "./routes/subscription.route";
-import heart from "./controllers/heart.controller";
-
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/auth',router);
 app.use('/user',userRouter);
-app.get('/message',heart);
 app.use("/subscription", subscriptionRoutes);
 
 

@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* Basic */
     "target": "ES6",
-    "module": "commonjs",
+    "module": "Node16",
 
     /* Paths */
     "rootDir": "./src",
@@ -10,7 +10,7 @@
 
     /* Node compatibility */
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
 
     /* Strictness */
     "strict": true,

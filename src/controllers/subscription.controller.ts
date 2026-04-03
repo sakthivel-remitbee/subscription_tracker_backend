@@ -1,6 +1,7 @@
 import { Response } from "express";
 import { AuthRequest } from "../types/authRequest";
 import Subscription from "../models/subscription.model";
+import User from "../models/user.model";
 import Category from "../models/category.model";
 import Currency from "../models/currency.model";
 import BillingCycle from "../models/billingCycle.model";
@@ -53,6 +54,7 @@ export const getSubscriptions = async (req: AuthRequest, res: Response) => {
     }
 
     const whereClause: any = { userId };
+    whereClause.cost = { [Op.gt]: 0 };
     if (statusParam) {
       whereClause.status = statusParam as "active" | "canceled";
     }
@@ -88,10 +90,8 @@ export const getSubscriptions = async (req: AuthRequest, res: Response) => {
     const subscriptions = paginated.rows;
     const totalItems = paginated.count;
 
-    const latestSubscription: any = await Subscription.findOne({
-      where: { userId },
+    const userWithCurrency: any = await User.findByPk(userId, {
       include: [{ model: Currency, as: "currency", attributes: ["code", "symbol"] }],
-      order: [["updatedAt", "DESC"]],
     });
 
     const all = await Subscription.findAll({
@@ -117,8 +117,14 @@ export const getSubscriptions = async (req: AuthRequest, res: Response) => {
         return sum + monthlyCost * rate;
       }, 0);
 
-    const targetCurrencyCode = latestSubscription?.currency?.code ?? "USD";
-    const targetCurrencySymbol = latestSubscription?.currency?.symbol ?? "$";
+    const targetCurrencyCode = req.user?.currency ?? userWithCurrency?.currency?.code ?? "USD";
+    const targetCurrencySymbol =
+      targetCurrencyCode === userWithCurrency?.currency?.code
+        ? (userWithCurrency?.currency?.symbol ?? "$")
+        : (targetCurrencyCode === "INR" ? "₹" :
+          targetCurrencyCode === "EUR" ? "€" :
+          targetCurrencyCode === "GBP" ? "£" :
+          targetCurrencyCode === "AED" ? "د.إ" : "$");
     const targetRate = toUSD[targetCurrencyCode] ?? 1;
     const monthlyCostInLoginCurrency = monthlyCostUSD / targetRate;
 

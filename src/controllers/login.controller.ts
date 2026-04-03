@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import User from "../models/user.model";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import Subscription from "../models/subscription.model";
 import Currency from "../models/currency.model";
 
 const MAX_SESSIONS = 2;
@@ -11,7 +10,10 @@ const MAX_SESSIONS = 2;
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password }: { email: string; password: string } = req.body;
-    const user = await User.findOne({ where: { email } });
+    const user: any = await User.findOne({
+      where: { email },
+      include: [{ model: Currency, as: "currency", attributes: ["code"] }],
+    });
 
     if (!user) {
       res.status(404).json({ message: "User not found" });
@@ -40,12 +42,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const accessToken = jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_A_SECRET as string,
-      { expiresIn: "15m" }
-    );
-
     const refreshToken = jwt.sign(
       { id: user.id },
       process.env.JWT_R_SECRET as string,
@@ -59,11 +55,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       countUsers: activeSessions + 1,
     });
 
-    const latestSubscription: any = await Subscription.findOne({
-      where: { userId: user.id },
-      include: [{ model: Currency, as: "currency", attributes: ["code"] }],
-      order: [["updatedAt", "DESC"]],
-    });
+    const userCurrency = user?.currency?.code ?? "INR";
+
+    const accessToken = jwt.sign(
+      { id: user.id, email: user.email, currency: userCurrency },
+      process.env.JWT_A_SECRET as string,
+      { expiresIn: "15m" }
+    );
 
     res.status(200).json({
       message: "Login successful",
@@ -75,7 +73,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         email:user.email,
         timezone:user.timezone,
         img:user.img,
-        currency:latestSubscription?.currency?.code ?? null,
+        currency:userCurrency,
         createdAt:user.createdAt,
         
       }
