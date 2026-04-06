@@ -10,6 +10,19 @@ import subscriptionRoutes from "./routes/subscription.route";
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use((req, res, next) => {
+  const startedAt = Date.now();
+  logger.info(`Request received: ${req.method} ${req.originalUrl}`);
+
+  res.on("finish", () => {
+    const durationMs = Date.now() - startedAt;
+    logger.info(
+      `Request completed: ${req.method} ${req.originalUrl} ${res.statusCode} ${durationMs}ms`
+    );
+  });
+
+  next();
+});
 app.use('/auth',router);
 app.use('/user',userRouter);
 app.use("/subscription", subscriptionRoutes);
@@ -17,7 +30,7 @@ app.use("/subscription", subscriptionRoutes);
 
 sequelize.authenticate()
 .then(()=>{ logger.info(`Db conncected`);})
-.catch((err)=>{logger.error(err.message())})
+.catch((err)=>{logger.error(err.message)})
 
 
 app.listen(process.env.PORT, () => {

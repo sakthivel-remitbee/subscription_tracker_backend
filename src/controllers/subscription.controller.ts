@@ -36,14 +36,8 @@ export const getSubscriptions = async (req: AuthRequest, res: Response) => {
     const countParam = req.params.count;
     const isAll = countParam === "all";
     const parsedPage = Number.parseInt(req.query.page as string, 10);
-    const parsedLimit = Number.parseInt(req.query.limit as string, 10);
-    const legacyLimit = Number.parseInt(countParam as string, 10);
-
     const page = Number.isNaN(parsedPage) || parsedPage < 1 ? 1 : parsedPage;
-    const limit = Number.isNaN(parsedLimit) || parsedLimit < 1
-      ? (Number.isNaN(legacyLimit) || legacyLimit < 1 ? 10 : legacyLimit)
-      : parsedLimit;
-    const safeLimit = Math.min(limit, 100);
+    const safeLimit = 10;
     const offset = (page - 1) * safeLimit;
     const statusParam = req.query.status as string | undefined;
     const categoryParam = (req.query.category as string | undefined)?.trim();
